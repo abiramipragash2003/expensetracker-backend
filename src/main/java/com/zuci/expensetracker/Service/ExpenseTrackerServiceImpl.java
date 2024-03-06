@@ -1,46 +1,48 @@
 package com.zuci.expensetracker.Service;
 
-import com.zuci.expensetracker.Model.Expense;
-import com.zuci.expensetracker.Model.Income;
-import com.zuci.expensetracker.Repository.ExpenseRepository;
-import com.zuci.expensetracker.Repository.IncomeRepository;
+import com.zuci.expensetracker.Dto.AddExpense;
+import com.zuci.expensetracker.Dto.AddIncome;
+import com.zuci.expensetracker.Model.ExpenseTracker;
+import com.zuci.expensetracker.Repository.ExpenseTrackerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
 {
+
     @Autowired
-    ExpenseRepository expenseRepository;
-    @Autowired
-    IncomeRepository incomeRepository;
+    ExpenseTrackerRepository expenseTrackerRepository;
     @Override
-    public Expense createExpense(Expense expense) {
-        return expenseRepository.save(expense);
+    public ExpenseTracker createExpense(AddExpense addExpense) {
+        ExpenseTracker expenseTracker=new ExpenseTracker(addExpense.getUsername(),addExpense.getType(),addExpense.getExpenseCategory(), addExpense.getExpenseName(), addExpense.getCost(), addExpense.getExpenseDate());
+        return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
-    public Income createIncome(Income income) {
-        return incomeRepository.save(income);
-    }
-
-    @Override
-    public List<Expense> getAllExpense()
+    public ExpenseTracker createIncome(AddIncome addIncome)
     {
-        return expenseRepository.findAll();
+        ExpenseTracker expenseTracker=new ExpenseTracker(addIncome.getUsername(), addIncome.getType(), addIncome.getIncomeCategory(), addIncome.getIncomeName(), addIncome.getCost(), addIncome.getIncomeDate());
+        return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
-    public List<Income> getAllIncome() {
-        return incomeRepository.findAll();
+    public List<ExpenseTracker> getAllExpense()
+    {
+        return expenseTrackerRepository.findAll();
     }
 
     @Override
-    public List<Expense> getExpenseByDate(String expenseCategory) {
-        return expenseRepository.findByExpenseCategory(expenseCategory);
+    public List<ExpenseTracker> getAllIncome() {
+        return expenseTrackerRepository.findAll();
     }
+
+    //@Override
+//    public List<ExpenseTracker> getAllByDate(LocalDate expenseDate) {
+//        return expenseTrackerRepository.findByDate(expenseDate);
+//    }
 
 }

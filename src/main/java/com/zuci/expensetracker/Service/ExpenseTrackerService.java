@@ -1,17 +1,19 @@
 package com.zuci.expensetracker.Service;
 
-import com.zuci.expensetracker.Model.Expense;
-import com.zuci.expensetracker.Model.Income;
+import com.zuci.expensetracker.Dto.AddExpense;
+import com.zuci.expensetracker.Dto.AddIncome;
+import com.zuci.expensetracker.Model.ExpenseTracker;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
 public interface ExpenseTrackerService {
-    public Expense createExpense(Expense expense);
-    public Income createIncome(Income income);
-    public List<Expense> getAllExpense();
+    public ExpenseTracker createExpense(AddExpense addExpense);
+    public ExpenseTracker createIncome(AddIncome addIncome);
+    public List<ExpenseTracker> getAllExpense();
 
-    List<Income> getAllIncome();
+    List<ExpenseTracker> getAllIncome();
 
-    List<Expense> getExpenseByDate(String expenseCategory);
+    //List<ExpenseTracker> getAllByDate(LocalDate expenseDate);
+
 }

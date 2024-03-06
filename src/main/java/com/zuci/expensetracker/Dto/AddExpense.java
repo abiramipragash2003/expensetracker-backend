@@ -1,21 +1,22 @@
-package com.zuci.expensetracker.Model;
+package com.zuci.expensetracker.Dto;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import lombok.Data;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Data
-@Entity
-public class Expense
+
+public class AddExpense
 {
-    @Id
-    private long expenseId;
+
     private String username;
+    private String type;
     private String expenseCategory;
     private String expenseName;
     private long cost;
-    private Date expenseDate;
+    private LocalDate expenseDate;
     private long totalExpense;
+
 }
