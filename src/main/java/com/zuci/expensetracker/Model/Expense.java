@@ -11,10 +11,11 @@ import java.util.Date;
 public class Expense
 {
     @Id
+    private long expenseId;
     private String username;
     private String expenseCategory;
     private String expenseName;
     private long cost;
     private Date expenseDate;
-    private long totalexpense;
+    private long totalExpense;
 }
