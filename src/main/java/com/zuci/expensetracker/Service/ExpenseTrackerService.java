@@ -10,10 +10,12 @@ import java.util.List;
 public interface ExpenseTrackerService {
     public ExpenseTracker createExpense(AddExpense addExpense);
     public ExpenseTracker createIncome(AddIncome addIncome);
-    public List<ExpenseTracker> getAllExpense();
+    public List<ExpenseTracker> getAllByType(String type);
 
-    List<ExpenseTracker> getAllIncome();
+    public String deleteById(long id);
 
-    //List<ExpenseTracker> getAllByDate(LocalDate expenseDate);
+    List<ExpenseTracker> getAllByDate(LocalDate date);
+    //List<ExpenseTracker> getAllByMonthAndYear(LocalDate monthAndYear);
 
+    public ExpenseTracker updateById(long id, ExpenseTracker expenseTracker);
 }

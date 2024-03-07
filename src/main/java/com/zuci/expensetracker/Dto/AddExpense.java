@@ -1,7 +1,6 @@
 package com.zuci.expensetracker.Dto;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.time.LocalDate;
@@ -11,12 +10,22 @@ import java.time.LocalDate;
 public class AddExpense
 {
 
+    @NotEmpty(message = "username must not be empty")
     private String username;
+
+    @NotEmpty(message = "Type must not be empty")
     private String type;
+
+    @NotEmpty(message = "Category must not be empty")
     private String expenseCategory;
+
     private String expenseName;
+
+    @Positive(message ="Cost should not be negative")
     private long cost;
+
     private LocalDate expenseDate;
+
     private long totalExpense;
 
 }

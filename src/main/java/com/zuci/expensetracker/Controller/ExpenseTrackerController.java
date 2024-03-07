@@ -3,9 +3,9 @@ import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Service.ExpenseTrackerServiceImpl;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
 import java.time.LocalDate;
 import java.util.List;
 
@@ -15,33 +15,43 @@ import java.util.List;
 public class ExpenseTrackerController
 {
     @Autowired
-    ExpenseTrackerServiceImpl expenseService;
+    ExpenseTrackerServiceImpl expenseTrackerService;
     @PostMapping(value="/expense")
-    public ExpenseTracker createExpense(@RequestBody AddExpense addExpense)
+    public ExpenseTracker createExpense(@Valid @RequestBody AddExpense addExpense)
     {
-        return expenseService.createExpense(addExpense);
+        return expenseTrackerService.createExpense(addExpense);
     }
     @PostMapping(value="/income")
-    public ExpenseTracker createIncome(@RequestBody AddIncome addIncome)
+    public ExpenseTracker createIncome(@Valid @RequestBody AddIncome addIncome)
     {
-        return expenseService.createIncome(addIncome);
+        return expenseTrackerService.createIncome(addIncome);
     }
-    @GetMapping(value = "/expense")
-    public List<ExpenseTracker> getAllExpense()
+    @GetMapping(value = "/type/{type}")
+    public List<ExpenseTracker> getAllByType(@PathVariable String type)
     {
-        return expenseService.getAllExpense();
+        return expenseTrackerService.getAllByType(type);
     }
-    @GetMapping(value = "/income")
-    public List<ExpenseTracker> getAllIncome()
+    @DeleteMapping(value="/{id}")
+    public String deleteById(@PathVariable long id)
     {
-        return expenseService.getAllIncome();
+        return  expenseTrackerService.deleteById(id);
     }
-//    @GetMapping(value="/expense/{expenseDate}")
-//    public List<ExpenseTracker> getExpenseByDate(@PathVariable LocalDate expenseDate)
+    @GetMapping(value="/date/{date}")
+    public List<ExpenseTracker> getAllByDate(@PathVariable LocalDate date)
+    {
+        return expenseTrackerService.getAllByDate(date);
+    }
+//    @GetMapping(value="/month/{monthAndYear}")
+//    public List<ExpenseTracker> getAllByMonthAndYear(@PathVariable("monthandyear")LocalDate monthAndYear)
 //    {
-//        return expenseService.getAllByDate(expenseDate);
+//        return expenseTrackerService.getAllByMonthAndYear(monthAndYear);
 //    }
-    //@GetMapping (value="/expense/{expenseDate}")
+    @PutMapping (value="/{id}")
+    public ExpenseTracker updateById(@PathVariable long id,@RequestBody ExpenseTracker expenseTracker)
+    {
+        return expenseTrackerService.updateById(id,expenseTracker);
+    }
+
 
 
     
