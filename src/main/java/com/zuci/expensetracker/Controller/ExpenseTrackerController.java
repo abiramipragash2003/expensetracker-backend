@@ -1,6 +1,7 @@
 package com.zuci.expensetracker.Controller;
 import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
+import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Service.ExpenseTrackerServiceImpl;
 import jakarta.validation.Valid;
@@ -8,7 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
-
+@CrossOrigin(originPatterns = "http://127.0.0.1:5500/")
 @RequestMapping(value = "/expensetracker")
 @RestController
 
@@ -31,25 +32,33 @@ public class ExpenseTrackerController
     {
         return expenseTrackerService.getAllByType(type);
     }
-    @DeleteMapping(value="/{id}")
-    public String deleteById(@PathVariable long id)
+    @GetMapping(value="/{type}/{category}")
+    public long getCostByTypeCategory(@PathVariable String type,@PathVariable String category)
     {
-        return  expenseTrackerService.deleteById(id);
+        return expenseTrackerService.getCostByTypeCategory(type,category);
     }
+
     @GetMapping(value="/date/{date}")
-    public List<ExpenseTracker> getAllByDate(@PathVariable LocalDate date)
+    public Response getAllByDate(@PathVariable LocalDate date)
     {
         return expenseTrackerService.getAllByDate(date);
     }
-//    @GetMapping(value="/month/{monthAndYear}")
-//    public List<ExpenseTracker> getAllByMonthAndYear(@PathVariable("monthandyear")LocalDate monthAndYear)
-//    {
-//        return expenseTrackerService.getAllByMonthAndYear(monthAndYear);
-//    }
+    @GetMapping(value="/month/{monthAndYear}")
+    public Response getAllByMonthAndYear(@PathVariable LocalDate monthAndYear)
+    {
+        return expenseTrackerService.getAllByMonthAndYear(monthAndYear);
+    }
+
+
     @PutMapping (value="/{id}")
     public ExpenseTracker updateById(@PathVariable long id,@RequestBody ExpenseTracker expenseTracker)
     {
         return expenseTrackerService.updateById(id,expenseTracker);
+    }
+    @DeleteMapping(value="/{id}")
+    public String deleteById(@PathVariable long id)
+    {
+        return  expenseTrackerService.deleteById(id);
     }
 
 

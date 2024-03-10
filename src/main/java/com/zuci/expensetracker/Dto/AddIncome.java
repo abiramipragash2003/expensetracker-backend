@@ -11,7 +11,7 @@ import java.time.LocalDate;
 public class AddIncome
 {
     @NotEmpty(message = "username must not be empty")
-    private String username;
+    private String userName;
 
     @NotEmpty(message = "Type must not be empty")
     private String type;
@@ -22,9 +22,8 @@ public class AddIncome
     private String incomeName;
 
     @Positive(message ="Cost should not be negative")
-    private long cost;
+    private long cost=0;
 
-    private long totalIncome;
 
     private LocalDate incomeDate;
 

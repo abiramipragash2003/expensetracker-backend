@@ -11,7 +11,7 @@ public class AddExpense
 {
 
     @NotEmpty(message = "username must not be empty")
-    private String username;
+    private String userName;
 
     @NotEmpty(message = "Type must not be empty")
     private String type;
@@ -22,10 +22,10 @@ public class AddExpense
     private String expenseName;
 
     @Positive(message ="Cost should not be negative")
-    private long cost;
+    private long cost=0;
 
     private LocalDate expenseDate;
 
-    private long totalExpense;
+
 
 }

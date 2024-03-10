@@ -24,21 +24,10 @@ public class AllExceptionHandler {
     public ResponseEntity<String> idNotFound() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id not exits");
     }
-
-//    @ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<ApiError> handleConstraintViolationExceptions(ConstraintViolationException ex, HttpServletRequest request) {
-//        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-//        StringBuilder sb = new StringBuilder();
-//        for (ConstraintViolation<?> violation : violations) {
-//            sb.append(violation.getPropertyPath().toString()).append(":").append(violation.getMessage()).append(";");
-//        }
-//        ApiError apiError = ApiError.builder()
-//                .Path(request.getRequestURI())
-//                .message(sb.toString())
-//                .date(new Date())
-//                .build();
-//        return ResponseEntity.badRequest().body(apiError);
-//    }
+    @ExceptionHandler({NullException.class})
+    public ResponseEntity<String> nullException() {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Null in input");
+    }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ApiError> handleValidationExceptions(MethodArgumentNotValidException ex, HttpServletRequest request) {
@@ -66,6 +55,21 @@ public class AllExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
+
+    //@ExceptionHandler(ConstraintViolationException.class)
+//    public ResponseEntity<ApiError> handleConstraintViolationExceptions(ConstraintViolationException ex, HttpServletRequest request) {
+//        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
+//        StringBuilder sb = new StringBuilder();
+//        for (ConstraintViolation<?> violation : violations) {
+//            sb.append(violation.getPropertyPath().toString()).append(":").append(violation.getMessage()).append(";");
+//        }
+//        ApiError apiError = ApiError.builder()
+//                .Path(request.getRequestURI())
+//                .message(sb.toString())
+//                .date(new Date())
+//                .build();
+//        return ResponseEntity.badRequest().body(apiError);
+//    }
 
 }
 

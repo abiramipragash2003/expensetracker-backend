@@ -8,8 +8,6 @@ import lombok.NoArgsConstructor;
 import java.util.Date;
 @Builder
 @Data
-@NoArgsConstructor
-@AllArgsConstructor
 public class ApiError {
     private String Path;
     private String message;
