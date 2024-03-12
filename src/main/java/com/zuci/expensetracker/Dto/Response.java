@@ -20,5 +20,4 @@ public class Response {
 
     private long balance;
 
-    private String message;
 }

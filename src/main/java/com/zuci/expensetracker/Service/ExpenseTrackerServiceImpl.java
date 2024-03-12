@@ -74,7 +74,7 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
             }
             catch (Exception e)
             {
-                throw new NullException();
+                totalExpense=0;
             }
             try
             {
@@ -82,17 +82,14 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
             }
             catch (Exception e)
             {
-                throw new NullException();
+                totalIncome=0;
             }
             long balance = totalIncome - totalExpense;
             response.setTotalExpense(totalExpense);
             response.setTotalIncome(totalIncome);
             response.setBalance(balance);
         }
-        else
-        {
-            response.setMessage("no transaction");
-        }
+
         return response;
 
     }
@@ -114,7 +111,7 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
             }
             catch (Exception e)
             {
-                //throw new NullException();
+                totalExpense=0;
             }
             try
             {
@@ -122,17 +119,14 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
             }
             catch (Exception e)
             {
-                //throw new NullException();
+                totalIncome=0;
             }
             long balance = totalIncome - totalExpense;
             response.setTotalExpense(totalExpense);
             response.setTotalIncome(totalIncome);
             response.setBalance(balance);
         }
-        else
-        {
-            response.setMessage("no transaction");
-        }
+
         return response;
 
 
@@ -144,6 +138,44 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
 //        response.setTotalExpense(totalExpense);
 //        response.setTotalIncome(totalIncome);
 //        response.setBalance(balance);
+
+
+    }
+
+    @Override
+    public Response getAllByYear(LocalDate inputyear)
+    {
+        long totalIncome=0,totalExpense=0;
+        int yeartaken= inputyear.getYear();
+
+        Response response=new Response();
+        List<ExpenseTracker> expenseTrackerList=expenseTrackerRepository.findAllByYear(yeartaken);
+        if(!expenseTrackerList.isEmpty())//list is not empty
+        {
+            response.setExpenseTracker(expenseTrackerList);
+            try
+            {
+                totalExpense = expenseTrackerRepository.total(yeartaken,"expense");
+            }
+            catch (Exception e)
+            {
+                totalExpense=0;
+            }
+            try
+            {
+                totalIncome = expenseTrackerRepository.total(yeartaken, "income");
+            }
+            catch (Exception e)
+            {
+                totalIncome=0;
+            }
+            long balance = totalIncome - totalExpense;
+            response.setTotalExpense(totalExpense);
+            response.setTotalIncome(totalIncome);
+            response.setBalance(balance);
+        }
+
+        return response;
 
 
     }

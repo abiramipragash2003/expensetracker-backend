@@ -17,8 +17,11 @@ public interface ExpenseTrackerService {
 
     Response getAllByDate(LocalDate date);
     Response getAllByMonthAndYear(LocalDate monthAndYear);
+    Response getAllByYear(LocalDate inputyear);
 
     public ExpenseTracker updateById(long id, ExpenseTracker expenseTracker);
 
     long getCostByTypeCategory(String type, String category);
+
+
 }

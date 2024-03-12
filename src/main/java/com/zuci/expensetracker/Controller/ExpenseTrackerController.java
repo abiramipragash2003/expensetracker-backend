@@ -3,6 +3,7 @@ import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Model.ExpenseTracker;
+import com.zuci.expensetracker.Service.ExpenseTrackerService;
 import com.zuci.expensetracker.Service.ExpenseTrackerServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +17,7 @@ import java.util.List;
 public class ExpenseTrackerController
 {
     @Autowired
-    ExpenseTrackerServiceImpl expenseTrackerService;
+    ExpenseTrackerService expenseTrackerService;
     @PostMapping(value="/expense")
     public ExpenseTracker createExpense(@Valid @RequestBody AddExpense addExpense)
     {
@@ -47,6 +48,11 @@ public class ExpenseTrackerController
     public Response getAllByMonthAndYear(@PathVariable LocalDate monthAndYear)
     {
         return expenseTrackerService.getAllByMonthAndYear(monthAndYear);
+    }
+    @GetMapping(value="/year/{inputyear}")
+    public Response getAllByYear(@PathVariable LocalDate inputyear)
+    {
+        return expenseTrackerService.getAllByYear(inputyear);
     }
 
 
