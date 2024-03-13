@@ -24,6 +24,7 @@ public class AllExceptionHandler {
     public ResponseEntity<String> idNotFound() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id not exits");
     }
+
     @ExceptionHandler({NullException.class})
     public ResponseEntity<String> nullException() {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Null in input");

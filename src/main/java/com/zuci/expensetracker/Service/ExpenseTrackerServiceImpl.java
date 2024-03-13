@@ -9,48 +9,43 @@ import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Repository.ExpenseTrackerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
-{
+public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
 
     @Autowired
     ExpenseTrackerRepository expenseTrackerRepository;
+
     @Override
     public ExpenseTracker createExpense(AddExpense addExpense) {
-        ExpenseTracker expenseTracker=new ExpenseTracker(addExpense.getUserName(),addExpense.getType(),addExpense.getExpenseCategory(), addExpense.getExpenseName(), addExpense.getCost(), addExpense.getExpenseDate());
+        ExpenseTracker expenseTracker = new ExpenseTracker(addExpense.getUserName(), addExpense.getType(), addExpense.getExpenseCategory(), addExpense.getExpenseName(), addExpense.getCost(), addExpense.getExpenseDate());
         return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
-    public ExpenseTracker createIncome(AddIncome addIncome)
-    {
-        ExpenseTracker expenseTracker=new ExpenseTracker(addIncome.getUserName(), addIncome.getType(), addIncome.getIncomeCategory(), addIncome.getIncomeName(), addIncome.getCost(), addIncome.getIncomeDate());
+    public ExpenseTracker createIncome(AddIncome addIncome) {
+        ExpenseTracker expenseTracker = new ExpenseTracker(addIncome.getUserName(), addIncome.getType(), addIncome.getIncomeCategory(), addIncome.getIncomeName(), addIncome.getCost(), addIncome.getIncomeDate());
         return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
-    public List<ExpenseTracker> getAllByType(String type)
-    {
+    public List<ExpenseTracker> getAllByType(String type) {
         return expenseTrackerRepository.findAllByType(type);
     }
 
     @Override
-    public String deleteById(long id)
-    {
-        String status=null;
-        Optional<ExpenseTracker> optional=expenseTrackerRepository.findById(id);
-        if(optional.isPresent())
-        {
+    public String deleteById(long id) {
+        String status = null;
+        Optional<ExpenseTracker> optional = expenseTrackerRepository.findById(id);
+        if (optional.isPresent()) {
             expenseTrackerRepository.deleteById(id);
-            status="deleted successfully";
+            status = "deleted successfully";
 
-        }
-        else
-        {
+        } else {
 
             throw new IdNotFoundException();
 
@@ -60,29 +55,22 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
     }
 
     @Override
-    public Response getAllByDate(LocalDate date)
-    {
-        long totalIncome=0,totalExpense=0;
-        Response response=new Response();
-        List<ExpenseTracker> expenseTrackerList=expenseTrackerRepository.findAllByDate(date);
-        if(!expenseTrackerList.isEmpty())//list is not empty
+    public Response getAllByDate(LocalDate date) {
+        long totalIncome = 0, totalExpense = 0;
+        Response response = new Response();
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByDate(date);
+        if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
-            try
-            {
+            try {
                 totalExpense = expenseTrackerRepository.total(date, "expense");
+            } catch (Exception e) {
+                totalExpense = 0;
             }
-            catch (Exception e)
-            {
-                totalExpense=0;
-            }
-            try
-            {
+            try {
                 totalIncome = expenseTrackerRepository.total(date, "income");
-            }
-            catch (Exception e)
-            {
-                totalIncome=0;
+            } catch (Exception e) {
+                totalIncome = 0;
             }
             long balance = totalIncome - totalExpense;
             response.setTotalExpense(totalExpense);
@@ -95,31 +83,24 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
     }
 
     @Override
-    public Response getAllByMonthAndYear(LocalDate monthAndYear)
-    {
-        long totalIncome=0,totalExpense=0;
-        int year= monthAndYear.getYear();
-        int month=monthAndYear.getMonthValue();
-        Response response=new Response();
-        List<ExpenseTracker> expenseTrackerList=expenseTrackerRepository.findAllByMonthAndYear(year,month);
-        if(!expenseTrackerList.isEmpty())//list is not empty
+    public Response getAllByMonthAndYear(LocalDate monthAndYear) {
+        long totalIncome = 0, totalExpense = 0;
+        int year = monthAndYear.getYear();
+        int month = monthAndYear.getMonthValue();
+        Response response = new Response();
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByMonthAndYear(year, month);
+        if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
-            try
-            {
-                totalExpense = expenseTrackerRepository.total(year, month,"expense");
+            try {
+                totalExpense = expenseTrackerRepository.total(year, month, "expense");
+            } catch (Exception e) {
+                totalExpense = 0;
             }
-            catch (Exception e)
-            {
-                totalExpense=0;
-            }
-            try
-            {
+            try {
                 totalIncome = expenseTrackerRepository.total(year, month, "income");
-            }
-            catch (Exception e)
-            {
-                totalIncome=0;
+            } catch (Exception e) {
+                totalIncome = 0;
             }
             long balance = totalIncome - totalExpense;
             response.setTotalExpense(totalExpense);
@@ -128,8 +109,6 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
         }
 
         return response;
-
-
 
 
 //        long totalExpense=expenseTrackerRepository.total(monthAndYear,"expense");
@@ -143,31 +122,24 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
     }
 
     @Override
-    public Response getAllByYear(LocalDate inputyear)
-    {
-        long totalIncome=0,totalExpense=0;
-        int yeartaken= inputyear.getYear();
+    public Response getAllByYear(LocalDate inputyear) {
+        long totalIncome = 0, totalExpense = 0;
+        int yeartaken = inputyear.getYear();
 
-        Response response=new Response();
-        List<ExpenseTracker> expenseTrackerList=expenseTrackerRepository.findAllByYear(yeartaken);
-        if(!expenseTrackerList.isEmpty())//list is not empty
+        Response response = new Response();
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByYear(yeartaken);
+        if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
-            try
-            {
-                totalExpense = expenseTrackerRepository.total(yeartaken,"expense");
+            try {
+                totalExpense = expenseTrackerRepository.total(yeartaken, "expense");
+            } catch (Exception e) {
+                totalExpense = 0;
             }
-            catch (Exception e)
-            {
-                totalExpense=0;
-            }
-            try
-            {
+            try {
                 totalIncome = expenseTrackerRepository.total(yeartaken, "income");
-            }
-            catch (Exception e)
-            {
-                totalIncome=0;
+            } catch (Exception e) {
+                totalIncome = 0;
             }
             long balance = totalIncome - totalExpense;
             response.setTotalExpense(totalExpense);
@@ -182,17 +154,14 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
 
     @Override
     public ExpenseTracker updateById(long id, ExpenseTracker expenseTracker) {
-        ExpenseTracker expenseTracker1=expenseTrackerRepository.findById(id).get();
-        if(expenseTracker.getCategory()!=null)
-        {
+        ExpenseTracker expenseTracker1 = expenseTrackerRepository.findById(id).get();
+        if (expenseTracker.getCategory() != null) {
             expenseTracker1.setCategory(expenseTracker.getCategory());
         }
-        if(expenseTracker.getCost()!=0)
-        {
+        if (expenseTracker.getCost() != 0) {
             expenseTracker1.setCost(expenseTracker.getCost());
         }
-        if(expenseTracker.getName()!=null)
-        {
+        if (expenseTracker.getName() != null) {
             expenseTracker1.setName(expenseTracker.getName());
         }
         return expenseTrackerRepository.save(expenseTracker1);
@@ -200,7 +169,7 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService
 
     @Override
     public long getCostByTypeCategory(String type, String category) {
-        return expenseTrackerRepository.findCostByTypeCategory(type,category);
+        return expenseTrackerRepository.findCostByTypeCategory(type, category);
     }
 
 

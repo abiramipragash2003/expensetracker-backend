@@ -1,8 +1,7 @@
 package com.zuci.expensetracker.Model;
 
 
-public class User
-{
+public class User {
 
     private String userName;
     private String userPassword;

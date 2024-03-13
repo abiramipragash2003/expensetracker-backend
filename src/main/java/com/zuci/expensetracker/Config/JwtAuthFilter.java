@@ -1,4 +1,8 @@
 package com.zuci.expensetracker.Config;
 
-public class JwtAuthFilter {
+public class JwtAuthFilter
+{
+
+
+
 }
