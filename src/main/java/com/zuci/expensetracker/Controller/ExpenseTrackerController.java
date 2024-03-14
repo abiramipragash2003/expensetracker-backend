@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@CrossOrigin(originPatterns = "http://127.0.0.1:5500/")
+@CrossOrigin("*")
 @RequestMapping(value = "/expensetracker")
 @RestController
 
