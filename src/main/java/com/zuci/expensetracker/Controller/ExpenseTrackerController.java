@@ -4,7 +4,6 @@ import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Model.ExpenseTracker;
-import com.zuci.expensetracker.Service.ExpenseTrackerService;
 import com.zuci.expensetracker.Service.ExpenseTrackerServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +18,7 @@ import java.util.List;
 
 public class ExpenseTrackerController {
     @Autowired
-    ExpenseTrackerService expenseTrackerService;
+    ExpenseTrackerServiceImpl expenseTrackerService;
 
     @PostMapping(value = "/expense")
     public ExpenseTracker createExpense(@Valid @RequestBody AddExpense addExpense) {

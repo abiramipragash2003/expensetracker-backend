@@ -4,7 +4,6 @@ import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Exception.IdNotFoundException;
-import com.zuci.expensetracker.Exception.NullException;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Repository.ExpenseTrackerRepository;
 import org.springframework.beans.factory.annotation.Autowired;

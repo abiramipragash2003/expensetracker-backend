@@ -57,21 +57,6 @@ public class AllExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
 
-    //@ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<ApiError> handleConstraintViolationExceptions(ConstraintViolationException ex, HttpServletRequest request) {
-//        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-//        StringBuilder sb = new StringBuilder();
-//        for (ConstraintViolation<?> violation : violations) {
-//            sb.append(violation.getPropertyPath().toString()).append(":").append(violation.getMessage()).append(";");
-//        }
-//        ApiError apiError = ApiError.builder()
-//                .Path(request.getRequestURI())
-//                .message(sb.toString())
-//                .date(new Date())
-//                .build();
-//        return ResponseEntity.badRequest().body(apiError);
-//    }
-
 }
 
 
