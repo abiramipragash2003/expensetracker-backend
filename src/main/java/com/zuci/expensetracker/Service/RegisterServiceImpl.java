@@ -19,7 +19,7 @@ public class RegisterServiceImpl implements RegisterService {
     private ExpenseTrackerSecurityConfig expenseTrackerSecurityConfig;
 
     public Registration createRegistration(Register register) {
-        Registration registration = new Registration(0, register.getUserName(), passwordEncoder.encode(register.getUserPassword()), register.getUserMailId(), register.getUserMobileNumber(), register.getRoles());
+        Registration registration = new Registration(0, register.getUsername(), passwordEncoder.encode(register.getUserPassword()), register.getUserMailId(), register.getUserMobileNumber(), register.getRoles());
         return userRepository.save(registration);
     }
 

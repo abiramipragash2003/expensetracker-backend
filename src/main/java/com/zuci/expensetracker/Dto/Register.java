@@ -11,16 +11,16 @@ import java.util.List;
 public class Register {
 
     @NotBlank(message = "Username should not be blank")
-    @Column(unique = true)
-    private String userName;
+
+    private String username;
     @NotBlank(message = "UserPassword should not be blank")
-    @Column(unique = true)
+
     private String userPassword;
     @NotBlank(message = "UserMailId should not be blank")
-    @Column(unique = true)
+
     private String userMailId;
     @NotBlank(message = "UserMobileNumber should not be blank")
-    @Column(unique = true)
+
     private String userMobileNumber;
     private List<Role> roles;
 }

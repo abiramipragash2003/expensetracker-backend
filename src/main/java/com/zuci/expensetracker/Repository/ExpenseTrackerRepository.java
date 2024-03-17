@@ -10,27 +10,30 @@ import java.util.List;
 
 public interface ExpenseTrackerRepository extends JpaRepository<ExpenseTracker, Long> {
 
-    List<ExpenseTracker> findAllByType(String type);
+    List<ExpenseTracker> findAllByTypeAndUserName(String type, String userName);
 
-    List<ExpenseTracker> findAllByDate(LocalDate expenseDate);
+    List<ExpenseTracker> findAllByDateAndUserName(LocalDate expenseDate, String userName);
 
-    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE e.date = :date AND e.type= :type ")
-    long total(@Param("date") LocalDate date, @Param("type") String type);
+    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE e.date = :date AND e.type= :type AND e.userName=:username")
+    long total(@Param("date") LocalDate date, @Param("type") String type, @Param("username") String username);
 
-    @Query("SELECT e FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month ORDER BY e.date DESC")
-    List<ExpenseTracker> findAllByMonthAndYear(@Param("year") int year, @Param("month") int month);
+    @Query("SELECT e FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month AND e.userName=:username ORDER BY e.date DESC")
+    List<ExpenseTracker> findAllByMonthAndYear(@Param("year") int year, @Param("month") int month, @Param("username") String username);
 
-    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month AND e.type = :type ")
-    long total(@Param("year") int year, @Param("month") int month, @Param("type") String type);
+    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND MONTH(e.date) = :month AND e.type = :type AND e.userName=:username")
+    long total(@Param("year") int year, @Param("month") int month, @Param("type") String type, @Param("username") String username);
 
-    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE e.type = :type AND e.category =:category")
-    long findCostByTypeCategory(String type, String category);
+    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE e.type = :type AND e.category =:category AND e.userName=:username")
+    long findCostByTypeCategory(String type, String category, @Param("username") String username);
 
-    @Query("SELECT e FROM ExpenseTracker e WHERE YEAR(e.date) = :year ORDER BY e.date DESC")
-    List<ExpenseTracker> findAllByYear(@Param("year") int year);
+    @Query("SELECT e FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND e.userName=:username ORDER BY e.date DESC")
+    List<ExpenseTracker> findAllByYear(@Param("year") int year, @Param("username") String username);
 
-    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND e.type = :type ")
-    long total(@Param("year") int year, @Param("type") String type);
+    @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND e.type = :type AND e.userName=:username")
+    long total(@Param("year") int year, @Param("type") String type, @Param("username") String username);
 
 
 }
+
+
+

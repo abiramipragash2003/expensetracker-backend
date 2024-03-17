@@ -6,11 +6,11 @@ import lombok.Data;
 @Data
 public class Login {
     @NotBlank(message = "Username should not be blank")
-    @Column(unique = true)
-    private String userName;
+
+    private String username;
 
     @NotBlank(message = "Password should not be blank")
-    @Column(unique = true)
+
     private String userPassword;
 
 }

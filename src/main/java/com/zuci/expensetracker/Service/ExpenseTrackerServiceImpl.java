@@ -7,6 +7,7 @@ import com.zuci.expensetracker.Exception.IdNotFoundException;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Repository.ExpenseTrackerRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,6 +19,10 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
 
     @Autowired
     ExpenseTrackerRepository expenseTrackerRepository;
+
+    String getCurrentUsername() {
+        return SecurityContextHolder.getContext().getAuthentication().getName();
+    }
 
     @Override
     public ExpenseTracker createExpense(AddExpense addExpense) {
@@ -33,7 +38,7 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
 
     @Override
     public List<ExpenseTracker> getAllByType(String type) {
-        return expenseTrackerRepository.findAllByType(type);
+        return expenseTrackerRepository.findAllByTypeAndUserName(type, getCurrentUsername());
     }
 
     @Override
@@ -57,17 +62,17 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
     public Response getAllByDate(LocalDate date) {
         long totalIncome = 0, totalExpense = 0;
         Response response = new Response();
-        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByDate(date);
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByDateAndUserName(date, getCurrentUsername());
         if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
             try {
-                totalExpense = expenseTrackerRepository.total(date, "expense");
+                totalExpense = expenseTrackerRepository.total(date, "expense", getCurrentUsername());
             } catch (Exception e) {
                 totalExpense = 0;
             }
             try {
-                totalIncome = expenseTrackerRepository.total(date, "income");
+                totalIncome = expenseTrackerRepository.total(date, "income", getCurrentUsername());
             } catch (Exception e) {
                 totalIncome = 0;
             }
@@ -87,17 +92,17 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
         int year = monthAndYear.getYear();
         int month = monthAndYear.getMonthValue();
         Response response = new Response();
-        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByMonthAndYear(year, month);
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByMonthAndYear(year, month, getCurrentUsername());
         if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
             try {
-                totalExpense = expenseTrackerRepository.total(year, month, "expense");
+                totalExpense = expenseTrackerRepository.total(year, month, "expense", getCurrentUsername());
             } catch (Exception e) {
                 totalExpense = 0;
             }
             try {
-                totalIncome = expenseTrackerRepository.total(year, month, "income");
+                totalIncome = expenseTrackerRepository.total(year, month, "income", getCurrentUsername());
             } catch (Exception e) {
                 totalIncome = 0;
             }
@@ -108,16 +113,6 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
         }
 
         return response;
-
-
-//        long totalExpense=expenseTrackerRepository.total(monthAndYear,"expense");
-//        long totalIncome=expenseTrackerRepository.total(monthAndYear,"income");
-//        long balance=totalIncome-totalExpense;
-//        response.setTotalExpense(totalExpense);
-//        response.setTotalIncome(totalIncome);
-//        response.setBalance(balance);
-
-
     }
 
     @Override
@@ -126,17 +121,17 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
         int yeartaken = inputyear.getYear();
 
         Response response = new Response();
-        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByYear(yeartaken);
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByYear(yeartaken, getCurrentUsername());
         if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
             try {
-                totalExpense = expenseTrackerRepository.total(yeartaken, "expense");
+                totalExpense = expenseTrackerRepository.total(yeartaken, "expense", getCurrentUsername());
             } catch (Exception e) {
                 totalExpense = 0;
             }
             try {
-                totalIncome = expenseTrackerRepository.total(yeartaken, "income");
+                totalIncome = expenseTrackerRepository.total(yeartaken, "income", getCurrentUsername());
             } catch (Exception e) {
                 totalIncome = 0;
             }
@@ -168,7 +163,7 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
 
     @Override
     public long getCostByTypeCategory(String type, String category) {
-        return expenseTrackerRepository.findCostByTypeCategory(type, category);
+        return expenseTrackerRepository.findCostByTypeCategory(type, category, getCurrentUsername());
     }
 
 
