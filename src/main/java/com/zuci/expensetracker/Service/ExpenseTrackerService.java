@@ -2,6 +2,7 @@ package com.zuci.expensetracker.Service;
 
 import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
+import com.zuci.expensetracker.Dto.Piechart;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 
@@ -13,7 +14,7 @@ public interface ExpenseTrackerService {
 
     public ExpenseTracker createIncome(AddIncome addIncome);
 
-    public List<Long> getAllByType(String type);
+    public Piechart getAllByType(String type);
 
     public String deleteById(long id);
 

@@ -21,13 +21,13 @@ import java.util.List;
 public class AllExceptionHandler {
 
     @ExceptionHandler({IdNotFoundException.class})
-    public ResponseEntity<String> idNotFound() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id not exits");
+    public ResponseEntity<String> idNotFound(IdNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ExceptionHandler({NullException.class})
-    public ResponseEntity<String> nullException() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Null in input");
+    public ResponseEntity<String> nullException(NullException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)

@@ -1,6 +1,5 @@
 package com.zuci.expensetracker.Dto;
 
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.NotBlank;
 import lombok.Data;
 @Data

@@ -2,7 +2,6 @@ package com.zuci.expensetracker.Controller;
 
 import com.zuci.expensetracker.Dto.Login;
 import com.zuci.expensetracker.Dto.Register;
-import com.zuci.expensetracker.Model.UserDb;
 import com.zuci.expensetracker.Service.JwtUtilityService;
 import com.zuci.expensetracker.Service.RegisterService;
 import com.zuci.expensetracker.Service.UserService;
@@ -18,7 +17,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
-@CrossOrigin("*")
+
 public class AuthController {
     @Autowired
     private RegisterService registerService;

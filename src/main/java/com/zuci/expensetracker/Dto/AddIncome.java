@@ -1,5 +1,6 @@
 package com.zuci.expensetracker.Dto;
 
+import com.zuci.expensetracker.Model.UserDb;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
@@ -8,7 +9,7 @@ import java.time.LocalDate;
 
 public class AddIncome {
     @NotEmpty(message = "username must not be empty")
-    private String userName;
+    private String username;
 
     @NotEmpty(message = "Type must not be empty")
     private String type;

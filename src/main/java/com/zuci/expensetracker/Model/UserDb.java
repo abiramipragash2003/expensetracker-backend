@@ -17,6 +17,7 @@ import java.util.List;
 public class UserDb implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private long userId;
     @Column(unique = true)
     private String username;

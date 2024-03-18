@@ -7,19 +7,18 @@ import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Exception.IdNotFoundException;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Repository.ExpenseTrackerRepository;
+import com.zuci.expensetracker.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
-
+    @Autowired
+    UserRepository userRepository;
     @Autowired
     ExpenseTrackerRepository expenseTrackerRepository;
 
@@ -29,31 +28,62 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
 
     @Override
     public ExpenseTracker createExpense(AddExpense addExpense) {
-        ExpenseTracker expenseTracker = new ExpenseTracker(addExpense.getUserName(), addExpense.getType(), addExpense.getExpenseCategory(), addExpense.getExpenseName(), addExpense.getCost(), addExpense.getExpenseDate());
+        ExpenseTracker expenseTracker = new ExpenseTracker(
+                userRepository.findByUsername(getCurrentUsername()),addExpense.getType(), addExpense.getExpenseCategory(), addExpense.getExpenseName(), addExpense.getCost(), addExpense.getExpenseDate());
         return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
     public ExpenseTracker createIncome(AddIncome addIncome) {
-        ExpenseTracker expenseTracker = new ExpenseTracker(addIncome.getUserName(), addIncome.getType(), addIncome.getIncomeCategory(), addIncome.getIncomeName(), addIncome.getCost(), addIncome.getIncomeDate());
+        ExpenseTracker expenseTracker = new ExpenseTracker(userRepository.findByUsername(getCurrentUsername()),addIncome.getType(), addIncome.getIncomeCategory(), addIncome.getIncomeName(), addIncome.getCost(), addIncome.getIncomeDate());
         return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
-    public List<Long> getAllByType(String type) {
-        //return expenseTrackerRepository.findAllByTypeAndUserName(type, getCurrentUsername());
-        List<String> incomecategory=new ArrayList<String>();
-        incomecategory.add("Salary");
-        incomecategory.add("Investment");
-        incomecategory.add("Awards");
-        incomecategory.add("Others");
-        List<Long> incomesource=new ArrayList<Long>();
-        long totalsalary,totalinvestment,totalawards,totalothers;
-        incomesource.add(totalsalary=expenseTrackerRepository.findCostByTypeCategory(type, "Salary", getCurrentUsername()));
-        incomesource.add(totalinvestment=expenseTrackerRepository.findCostByTypeCategory(type, "Investment", getCurrentUsername()));
-        incomesource.add(totalawards=expenseTrackerRepository.findCostByTypeCategory(type, "Awards", getCurrentUsername()));
-        incomesource.add(totalothers=expenseTrackerRepository.findCostByTypeCategory(type, "Others", getCurrentUsername()));
-        return incomesource;
+    public Piechart getAllByType(String type) {
+        String[] incomeCategory = {"Salary","Investment","Awards","Others"};
+        String[] expenseCategory = {"Shopping","Food","Telephone","Entertainment","Education",
+                "Beauty","Transportation","Clothes","Electronics","Travel","Health","Gifts","Others"};
+        long total=0;
+        Map<String, Long> incomeMap = new HashMap<>();//key value pair
+        Map<String, Long> expenseMap = new HashMap<>();
+        if(type.equals("income"))
+        {
+            for(int i=0;i<incomeCategory.length;i++)
+            {
+                try
+                {
+                    total=expenseTrackerRepository.findCostByTypeCategory(type, incomeCategory[i], getCurrentUsername());
+                    incomeMap.put(incomeCategory[i],total);//to add key and values in hash map
+                    total=0;
+                }
+                catch (Exception e)
+                {
+                    incomeMap.put(incomeCategory[i],total);
+                    total=0;
+                }
+            }
+        }
+        else
+        {
+            for(int i=0;i<expenseCategory.length;i++)
+            {
+                try
+                {
+                    total=expenseTrackerRepository.findCostByTypeCategory(type, expenseCategory[i], getCurrentUsername());
+                    expenseMap.put(expenseCategory[i],total);
+                    total=0;
+                }catch (Exception e)
+                {
+                    expenseMap.put(expenseCategory[i],total);
+                    total=0;
+                }
+            }
+        }
+        Piechart piechart=new Piechart();
+        piechart.setIncomeMap(incomeMap);
+        piechart.setExpenseMap(expenseMap);
+        return piechart;
     }
 
     @Override
@@ -77,7 +107,7 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
     public Response getAllByDate(LocalDate date) {
         long totalIncome = 0, totalExpense = 0;
         Response response = new Response();
-        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByDateAndUserName(date, getCurrentUsername());
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByDateAndUsername(date, getCurrentUsername());
         if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);

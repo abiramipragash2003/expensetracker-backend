@@ -11,12 +11,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.time.LocalDate;
-import java.util.List;
 
 
 @RequestMapping(value = "/expensetracker")
 @RestController
-@CrossOrigin("*")
+
 public class ExpenseTrackerController {
     @Autowired
     ExpenseTrackerServiceImpl expenseTrackerService;
@@ -33,11 +32,8 @@ public class ExpenseTrackerController {
 
     @GetMapping(value = "/type/{type}")
     public Piechart getAllByType(@PathVariable String type) {
-        Piechart piechart=new Piechart();
-        piechart.setIncomelist(expenseTrackerService.getAllByType(type));
-        return piechart;
+        return expenseTrackerService.getAllByType(type);
     }
-
     @GetMapping(value = "/{type}/{category}")
     public long getCostByTypeCategory(@PathVariable String type, @PathVariable String category) {
         return expenseTrackerService.getCostByTypeCategory(type, category);
