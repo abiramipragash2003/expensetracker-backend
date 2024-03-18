@@ -13,7 +13,7 @@ public interface ExpenseTrackerService {
 
     public ExpenseTracker createIncome(AddIncome addIncome);
 
-    public List<ExpenseTracker> getAllByType(String type);
+    public List<Long> getAllByType(String type);
 
     public String deleteById(long id);
 

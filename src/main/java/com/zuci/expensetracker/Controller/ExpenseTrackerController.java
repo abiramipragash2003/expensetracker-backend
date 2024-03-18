@@ -2,6 +2,7 @@ package com.zuci.expensetracker.Controller;
 
 import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
+import com.zuci.expensetracker.Dto.Piechart;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Service.ExpenseTrackerServiceImpl;
@@ -12,10 +13,10 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.util.List;
 
-@CrossOrigin("*")
+
 @RequestMapping(value = "/expensetracker")
 @RestController
-
+@CrossOrigin("*")
 public class ExpenseTrackerController {
     @Autowired
     ExpenseTrackerServiceImpl expenseTrackerService;
@@ -31,8 +32,10 @@ public class ExpenseTrackerController {
     }
 
     @GetMapping(value = "/type/{type}")
-    public List<ExpenseTracker> getAllByType(@PathVariable String type) {
-        return expenseTrackerService.getAllByType(type);
+    public Piechart getAllByType(@PathVariable String type) {
+        Piechart piechart=new Piechart();
+        piechart.setIncomelist(expenseTrackerService.getAllByType(type));
+        return piechart;
     }
 
     @GetMapping(value = "/{type}/{category}")

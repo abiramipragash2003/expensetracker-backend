@@ -2,7 +2,7 @@ package com.zuci.expensetracker.Controller;
 
 import com.zuci.expensetracker.Dto.Login;
 import com.zuci.expensetracker.Dto.Register;
-import com.zuci.expensetracker.Model.Registration;
+import com.zuci.expensetracker.Model.UserDb;
 import com.zuci.expensetracker.Service.JwtUtilityService;
 import com.zuci.expensetracker.Service.RegisterService;
 import com.zuci.expensetracker.Service.UserService;
@@ -29,8 +29,10 @@ public class AuthController {
     private JwtUtilityService jwtUtilityService;
 
     @PostMapping("/signup")
-    public Registration createRegistration(@Valid @RequestBody Register register) {
-        return registerService.createRegistration(register);
+    public String createRegistration(@Valid @RequestBody Register register) {
+
+        registerService.createRegistration(register);
+        return jwtUtilityService.generateToken(register.getUsername());
     }
 
     @PostMapping("/login")

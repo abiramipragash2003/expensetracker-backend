@@ -1,12 +1,12 @@
 package com.zuci.expensetracker.Service;
 
 import com.zuci.expensetracker.Dto.Register;
-import com.zuci.expensetracker.Model.Registration;
+import com.zuci.expensetracker.Model.UserDb;
 
 
 public interface RegisterService {
 
-    public Registration createRegistration(Register register);
+    public UserDb createRegistration(Register register);
 
 
 }

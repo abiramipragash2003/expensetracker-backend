@@ -2,6 +2,7 @@ package com.zuci.expensetracker.Service;
 
 import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
+import com.zuci.expensetracker.Dto.Piechart;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Exception.IdNotFoundException;
 import com.zuci.expensetracker.Model.ExpenseTracker;
@@ -11,6 +12,8 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 
@@ -37,8 +40,20 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
     }
 
     @Override
-    public List<ExpenseTracker> getAllByType(String type) {
-        return expenseTrackerRepository.findAllByTypeAndUserName(type, getCurrentUsername());
+    public List<Long> getAllByType(String type) {
+        //return expenseTrackerRepository.findAllByTypeAndUserName(type, getCurrentUsername());
+        List<String> incomecategory=new ArrayList<String>();
+        incomecategory.add("Salary");
+        incomecategory.add("Investment");
+        incomecategory.add("Awards");
+        incomecategory.add("Others");
+        List<Long> incomesource=new ArrayList<Long>();
+        long totalsalary,totalinvestment,totalawards,totalothers;
+        incomesource.add(totalsalary=expenseTrackerRepository.findCostByTypeCategory(type, "Salary", getCurrentUsername()));
+        incomesource.add(totalinvestment=expenseTrackerRepository.findCostByTypeCategory(type, "Investment", getCurrentUsername()));
+        incomesource.add(totalawards=expenseTrackerRepository.findCostByTypeCategory(type, "Awards", getCurrentUsername()));
+        incomesource.add(totalothers=expenseTrackerRepository.findCostByTypeCategory(type, "Others", getCurrentUsername()));
+        return incomesource;
     }
 
     @Override

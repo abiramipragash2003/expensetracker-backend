@@ -1,6 +1,6 @@
 package com.zuci.expensetracker.Service;
 
-import com.zuci.expensetracker.Model.Registration;
+import com.zuci.expensetracker.Model.UserDb;
 import com.zuci.expensetracker.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -22,12 +22,13 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Registration registration = userRepository.findByUsername(username);
-        System.out.println(registration);
-        if (registration == null) {
+        UserDb userDb = userRepository.findByUsername(username);
+
+        if (userDb == null) {
             throw new UsernameNotFoundException("username not exist");
         }
-        List<GrantedAuthority> list = registration.getRoles().stream().map(e -> new SimpleGrantedAuthority(e.getRoleName())).collect(Collectors.toList());
-        return new User(registration.getUsername(), registration.getUserPassword(), list);
+
+        List<GrantedAuthority> list = userDb.getRoles().stream().map(e -> new SimpleGrantedAuthority(e.getRoleName())).collect(Collectors.toList());
+        return new User(userDb.getUsername(), userDb.getUserPassword(), list);
     }
 }
