@@ -10,9 +10,6 @@ import java.time.LocalDate;
 
 public class AddExpense {
 
-    @NotEmpty
-    private String username;
-
     @NotEmpty(message = "Type must not be empty")
     private String type;
 

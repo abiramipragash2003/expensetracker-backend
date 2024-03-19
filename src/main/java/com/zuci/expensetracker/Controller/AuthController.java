@@ -5,15 +5,11 @@ import com.zuci.expensetracker.Dto.Register;
 import com.zuci.expensetracker.Service.JwtUtilityService;
 import com.zuci.expensetracker.Service.RegisterService;
 import com.zuci.expensetracker.Service.UserService;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth")
@@ -43,25 +39,7 @@ public class AuthController {
     }
 
     @GetMapping("/username/{username}")
-    public String validateUsername(@PathVariable String username)
-    {
+    public String validateUsername(@PathVariable String username) {
         return UserService.checkUsername(username);
     }
-
-    @PostMapping("/logout")
-    public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        System.out.println(auth);
-        if (auth != null) {
-
-            SecurityContextHolder.getContext().setAuthentication(null);
-            request.getSession().invalidate();
-            response.sendRedirect("/login?logout");
-            return "logout";
-        } else {
-            return "not";
-        }
-    }
-
-
 }

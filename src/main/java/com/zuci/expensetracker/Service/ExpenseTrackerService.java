@@ -6,7 +6,6 @@ import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 
 import java.time.LocalDate;
-import java.util.List;
 
 public interface ExpenseTrackerService {
     public ExpenseTracker createExpense(AddExpense addExpense);
@@ -22,8 +21,6 @@ public interface ExpenseTrackerService {
     Response getAllByYear(LocalDate inputyear);
 
     public ExpenseTracker updateById(long id, ExpenseTracker expenseTracker);
-
-
 
 
 }

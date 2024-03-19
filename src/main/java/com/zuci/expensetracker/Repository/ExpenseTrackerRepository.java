@@ -10,8 +10,6 @@ import java.util.List;
 
 public interface ExpenseTrackerRepository extends JpaRepository<ExpenseTracker, Long> {
 
-    @Query("SELECT e FROM ExpenseTracker e WHERE e.userdb.username = :username")
-    List<ExpenseTracker> findByUserName(@Param("username") String username);
     @Query("SELECT e FROM ExpenseTracker e WHERE e.date = :date AND e.userdb.username = :username")
     List<ExpenseTracker> findAllByDateAndUsername(@Param("date")LocalDate expenseDate,@Param("username") String username);
 

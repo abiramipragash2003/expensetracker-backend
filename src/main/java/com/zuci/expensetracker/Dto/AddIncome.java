@@ -7,9 +7,6 @@ import java.time.LocalDate;
 @Data
 
 public class AddIncome {
-    @NotEmpty(message = "username must not be empty")
-    private String username;
-
     @NotEmpty(message = "Type must not be empty")
     private String type;
 

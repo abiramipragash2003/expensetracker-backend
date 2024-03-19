@@ -56,4 +56,12 @@ public class UserDb implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
+
+    public UserDb(String username, String userPassword, String userMailId, String userMobileNumber, List<Role> roles) {
+        this.username = username;
+        this.userPassword = userPassword;
+        this.userMailId = userMailId;
+        this.userMobileNumber = userMobileNumber;
+        this.roles = roles;
+    }
 }
