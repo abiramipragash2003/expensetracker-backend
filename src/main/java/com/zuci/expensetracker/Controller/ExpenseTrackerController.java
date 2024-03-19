@@ -2,7 +2,6 @@ package com.zuci.expensetracker.Controller;
 
 import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
-import com.zuci.expensetracker.Dto.Piechart;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Model.ExpenseTracker;
 import com.zuci.expensetracker.Service.ExpenseTrackerServiceImpl;
@@ -30,14 +29,6 @@ public class ExpenseTrackerController {
         return expenseTrackerService.createIncome(addIncome);
     }
 
-    @GetMapping(value = "/type/{type}")
-    public Piechart getAllByType(@PathVariable String type) {
-        return expenseTrackerService.getAllByType(type);
-    }
-    @GetMapping(value = "/{type}/{category}")
-    public long getCostByTypeCategory(@PathVariable String type, @PathVariable String category) {
-        return expenseTrackerService.getCostByTypeCategory(type, category);
-    }
 
     @GetMapping(value = "/date/{date}")
     public Response getAllByDate(@PathVariable LocalDate date) {

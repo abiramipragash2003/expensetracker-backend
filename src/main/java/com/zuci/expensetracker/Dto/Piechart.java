@@ -3,7 +3,6 @@ package com.zuci.expensetracker.Dto;
 import lombok.Data;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Data

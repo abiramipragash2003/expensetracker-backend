@@ -42,6 +42,12 @@ public class AuthController {
         return jwtUtilityService.generateToken(login.getUsername());
     }
 
+    @GetMapping("/username/{username}")
+    public String validateUsername(@PathVariable String username)
+    {
+        return UserService.checkUsername(username);
+    }
+
     @PostMapping("/logout")
     public String logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();

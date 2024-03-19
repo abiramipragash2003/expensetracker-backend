@@ -28,7 +28,7 @@ public class ExpenseTrackerSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(e -> e.disable());
         http.authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/auth/signup", "/auth/login", "/auth/logout").permitAll()
+                        auth.requestMatchers("/auth/**").permitAll()
                                 .anyRequest().authenticated())
                 .sessionManagement(Customizer.withDefaults())
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

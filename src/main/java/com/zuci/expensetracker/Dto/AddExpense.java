@@ -1,6 +1,5 @@
 package com.zuci.expensetracker.Dto;
 
-import com.zuci.expensetracker.Model.UserDb;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;

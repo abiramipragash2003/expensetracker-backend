@@ -12,6 +12,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -22,13 +23,28 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        UserDb userDb = userRepository.findByUsername(username);
+        UserDb user ;
 
-        if (userDb == null) {
+        if (!userRepository.findByUsername(username).isPresent()) {
             throw new UsernameNotFoundException("username not exist");
         }
+        else {
+            user=userRepository.findByUsername(username).get();
+        }
 
-        List<GrantedAuthority> list = userDb.getRoles().stream().map(e -> new SimpleGrantedAuthority(e.getRoleName())).collect(Collectors.toList());
-        return new User(userDb.getUsername(), userDb.getUserPassword(), list);
+        List<GrantedAuthority> list = user.getRoles().stream().map(e -> new SimpleGrantedAuthority(e.getRoleName())).collect(Collectors.toList());
+        return new User(user.getUsername(), user.getUserPassword(), list);
+    }
+
+
+    public String checkUsername(String username) {
+        if(userRepository.findByUsername(username).isPresent())
+        {
+            return "Username already exists";
+        }
+        else
+        {
+            return "Username available";
+        }
     }
 }

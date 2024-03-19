@@ -2,7 +2,6 @@ package com.zuci.expensetracker.Service;
 
 import com.zuci.expensetracker.Dto.AddExpense;
 import com.zuci.expensetracker.Dto.AddIncome;
-import com.zuci.expensetracker.Dto.Piechart;
 import com.zuci.expensetracker.Dto.Response;
 import com.zuci.expensetracker.Exception.IdNotFoundException;
 import com.zuci.expensetracker.Model.ExpenseTracker;
@@ -28,62 +27,16 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
 
     @Override
     public ExpenseTracker createExpense(AddExpense addExpense) {
-        ExpenseTracker expenseTracker = new ExpenseTracker(
-                userRepository.findByUsername(getCurrentUsername()),addExpense.getType(), addExpense.getExpenseCategory(), addExpense.getExpenseName(), addExpense.getCost(), addExpense.getExpenseDate());
-        return expenseTrackerRepository.save(expenseTracker);
+
+            ExpenseTracker expenseTracker = new ExpenseTracker(userRepository.findByUsername(getCurrentUsername()).get(), addExpense.getType(), addExpense.getExpenseCategory(), addExpense.getExpenseName(), addExpense.getCost(), addExpense.getExpenseDate());
+            return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
     public ExpenseTracker createIncome(AddIncome addIncome) {
-        ExpenseTracker expenseTracker = new ExpenseTracker(userRepository.findByUsername(getCurrentUsername()),addIncome.getType(), addIncome.getIncomeCategory(), addIncome.getIncomeName(), addIncome.getCost(), addIncome.getIncomeDate());
-        return expenseTrackerRepository.save(expenseTracker);
-    }
 
-    @Override
-    public Piechart getAllByType(String type) {
-        String[] incomeCategory = {"Salary","Investment","Awards","Others"};
-        String[] expenseCategory = {"Shopping","Food","Telephone","Entertainment","Education",
-                "Beauty","Transportation","Clothes","Electronics","Travel","Health","Gifts","Others"};
-        long total=0;
-        Map<String, Long> incomeMap = new HashMap<>();//key value pair
-        Map<String, Long> expenseMap = new HashMap<>();
-        if(type.equals("income"))
-        {
-            for(int i=0;i<incomeCategory.length;i++)
-            {
-                try
-                {
-                    total=expenseTrackerRepository.findCostByTypeCategory(type, incomeCategory[i], getCurrentUsername());
-                    incomeMap.put(incomeCategory[i],total);//to add key and values in hash map
-                    total=0;
-                }
-                catch (Exception e)
-                {
-                    incomeMap.put(incomeCategory[i],total);
-                    total=0;
-                }
-            }
-        }
-        else
-        {
-            for(int i=0;i<expenseCategory.length;i++)
-            {
-                try
-                {
-                    total=expenseTrackerRepository.findCostByTypeCategory(type, expenseCategory[i], getCurrentUsername());
-                    expenseMap.put(expenseCategory[i],total);
-                    total=0;
-                }catch (Exception e)
-                {
-                    expenseMap.put(expenseCategory[i],total);
-                    total=0;
-                }
-            }
-        }
-        Piechart piechart=new Piechart();
-        piechart.setIncomeMap(incomeMap);
-        piechart.setExpenseMap(expenseMap);
-        return piechart;
+        ExpenseTracker expenseTracker = new ExpenseTracker(userRepository.findByUsername(getCurrentUsername()).get(), addIncome.getType(), addIncome.getIncomeCategory(), addIncome.getIncomeName(), addIncome.getCost(), addIncome.getIncomeDate());
+        return expenseTrackerRepository.save(expenseTracker);
     }
 
     @Override
@@ -106,8 +59,15 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
     @Override
     public Response getAllByDate(LocalDate date) {
         long totalIncome = 0, totalExpense = 0;
+        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByDateAndUsername(date,getCurrentUsername());
+        String[] incomeCategory = {"Salary", "Investment", "Awards", "Others"};
+        String[] expenseCategory = {"Shopping", "Food", "Telephone", "Entertainment", "Education",
+                "Beauty", "Transportation", "Clothes", "Electronics", "Travel", "Health", "Gifts", "Others"};
+        long total = 0;
+        Map<String, Long> incomeMap = new HashMap<>();//key value pair
+        Map<String, Long> expenseMap = new HashMap<>();
         Response response = new Response();
-        List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByDateAndUsername(date, getCurrentUsername());
+
         if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
@@ -125,6 +85,36 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
             response.setTotalExpense(totalExpense);
             response.setTotalIncome(totalIncome);
             response.setBalance(balance);
+
+
+
+                for (int i = 0; i < incomeCategory.length; i++) {
+                    try {
+                        total = expenseTrackerRepository.findCostByTypeCategoryAndDate("income", incomeCategory[i], date,getCurrentUsername());
+                        incomeMap.put(incomeCategory[i], total);//to add key and values in hash map
+                        total = 0;
+                    } catch (Exception e) {
+                        incomeMap.put(incomeCategory[i], total);
+                        total = 0;
+                    }
+                }
+
+
+                for (int i = 0; i < expenseCategory.length; i++) {
+                    try {
+                        total = expenseTrackerRepository.findCostByTypeCategoryAndDate("expense", expenseCategory[i],date,getCurrentUsername());
+                        expenseMap.put(expenseCategory[i], total);
+                        total = 0;
+                    } catch (Exception e) {
+                        expenseMap.put(expenseCategory[i], total);
+                        total = 0;
+                    }
+                }
+
+
+                response.setIncomeMap(incomeMap);
+                response.setExpenseMap(expenseMap);
+
         }
 
         return response;
@@ -138,6 +128,12 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
         int month = monthAndYear.getMonthValue();
         Response response = new Response();
         List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByMonthAndYear(year, month, getCurrentUsername());
+        String[] incomeCategory = {"Salary", "Investment", "Awards", "Others"};
+        String[] expenseCategory = {"Shopping", "Food", "Telephone", "Entertainment", "Education",
+                "Beauty", "Transportation", "Clothes", "Electronics", "Travel", "Health", "Gifts", "Others"};
+        long total = 0;
+        Map<String, Long> incomeMap = new HashMap<>();//key value pair
+        Map<String, Long> expenseMap = new HashMap<>();
         if (!expenseTrackerList.isEmpty())//list is not empty
         {
             response.setExpenseTracker(expenseTrackerList);
@@ -155,7 +151,37 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
             response.setTotalExpense(totalExpense);
             response.setTotalIncome(totalIncome);
             response.setBalance(balance);
+
+
+            for (int i = 0; i < incomeCategory.length; i++) {
+                try {
+                    total = expenseTrackerRepository.findCostByTypeCategoryAndMonthAndYear("income", incomeCategory[i], year,month,getCurrentUsername());
+                    incomeMap.put(incomeCategory[i], total);//to add key and values in hash map
+                    total = 0;
+                } catch (Exception e) {
+                    incomeMap.put(incomeCategory[i], total);
+                    total = 0;
+                }
+            }
+
+
+            for (int i = 0; i < expenseCategory.length; i++) {
+                try {
+                    total = expenseTrackerRepository.findCostByTypeCategoryAndMonthAndYear("expense", expenseCategory[i], year,month,getCurrentUsername());
+                    expenseMap.put(expenseCategory[i], total);
+                    total = 0;
+                } catch (Exception e) {
+                    expenseMap.put(expenseCategory[i], total);
+                    total = 0;
+                }
+            }
+
+
+            response.setIncomeMap(incomeMap);
+            response.setExpenseMap(expenseMap);
+
         }
+
 
         return response;
     }
@@ -164,8 +190,13 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
     public Response getAllByYear(LocalDate inputyear) {
         long totalIncome = 0, totalExpense = 0;
         int yeartaken = inputyear.getYear();
-
         Response response = new Response();
+        String[] incomeCategory = {"Salary", "Investment", "Awards", "Others"};
+        String[] expenseCategory = {"Shopping", "Food", "Telephone", "Entertainment", "Education",
+                "Beauty", "Transportation", "Clothes", "Electronics", "Travel", "Health", "Gifts", "Others"};
+        long total = 0;
+        Map<String, Long> incomeMap = new HashMap<>();//key value pair
+        Map<String, Long> expenseMap = new HashMap<>();
         List<ExpenseTracker> expenseTrackerList = expenseTrackerRepository.findAllByYear(yeartaken, getCurrentUsername());
         if (!expenseTrackerList.isEmpty())//list is not empty
         {
@@ -184,6 +215,33 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
             response.setTotalExpense(totalExpense);
             response.setTotalIncome(totalIncome);
             response.setBalance(balance);
+            for (int i = 0; i < incomeCategory.length; i++) {
+                try {
+                    total = expenseTrackerRepository.findCostByTypeCategoryAndYear("income", incomeCategory[i], yeartaken,getCurrentUsername());
+                    incomeMap.put(incomeCategory[i], total);//to add key and values in hash map
+                    total = 0;
+                } catch (Exception e) {
+                    incomeMap.put(incomeCategory[i], total);
+                    total = 0;
+                }
+            }
+
+
+            for (int i = 0; i < expenseCategory.length; i++) {
+                try {
+                    total = expenseTrackerRepository.findCostByTypeCategoryAndYear("expense", expenseCategory[i], yeartaken,getCurrentUsername());
+                    expenseMap.put(expenseCategory[i], total);
+                    total = 0;
+                } catch (Exception e) {
+                    expenseMap.put(expenseCategory[i], total);
+                    total = 0;
+                }
+            }
+            response.setIncomeMap(incomeMap);
+            response.setExpenseMap(expenseMap);
+
+
+
         }
 
         return response;
@@ -206,10 +264,7 @@ public class ExpenseTrackerServiceImpl implements ExpenseTrackerService {
         return expenseTrackerRepository.save(expenseTracker1);
     }
 
-    @Override
-    public long getCostByTypeCategory(String type, String category) {
-        return expenseTrackerRepository.findCostByTypeCategory(type, category, getCurrentUsername());
-    }
+
 
 
 }

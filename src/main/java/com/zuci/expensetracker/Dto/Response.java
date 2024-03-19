@@ -6,7 +6,9 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Data
 @AllArgsConstructor
@@ -20,5 +22,7 @@ public class Response {
     private long totalIncome;
 
     private long balance;
+    Map<String, Long> incomeMap = new HashMap<>();
+    Map<String, Long> ExpenseMap = new HashMap<>();
 
 }
