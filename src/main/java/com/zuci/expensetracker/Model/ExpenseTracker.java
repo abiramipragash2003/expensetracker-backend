@@ -1,9 +1,11 @@
 package com.zuci.expensetracker.Model;
+
 import jakarta.persistence.*;
 
-import lombok.AllArgsConstructor;
+
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
 import java.time.LocalDate;
 
 
@@ -11,13 +13,14 @@ import java.time.LocalDate;
 @Data
 @NoArgsConstructor
 
-public class ExpenseTracker
-{
+public class ExpenseTracker {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String userName;
+    @ManyToOne
+    @JoinColumn(name = "username")
+    private UserDb userdb;
 
     //type is either income or expense
     private String type;
@@ -31,16 +34,13 @@ public class ExpenseTracker
 
     private LocalDate date;
 
-    public ExpenseTracker(String username, String type, String category, String name, long cost, LocalDate date)
-    {
-        this.userName = username;
+    public ExpenseTracker(UserDb userdb, String type, String category, String name, long cost, LocalDate date) {
+        this.userdb = userdb;
         this.type = type;
         this.category = category;
         this.name = name;
         this.cost = cost;
         this.date = date;
-
     }
-
 
 }

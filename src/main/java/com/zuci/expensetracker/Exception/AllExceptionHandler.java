@@ -21,12 +21,13 @@ import java.util.List;
 public class AllExceptionHandler {
 
     @ExceptionHandler({IdNotFoundException.class})
-    public ResponseEntity<String> idNotFound() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Id not exits");
+    public ResponseEntity<String> idNotFound(IdNotFoundException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
+
     @ExceptionHandler({NullException.class})
-    public ResponseEntity<String> nullException() {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Null in input");
+    public ResponseEntity<String> nullException(NullException e) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
     }
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -55,21 +56,6 @@ public class AllExceptionHandler {
                 .build();
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(apiError);
     }
-
-    //@ExceptionHandler(ConstraintViolationException.class)
-//    public ResponseEntity<ApiError> handleConstraintViolationExceptions(ConstraintViolationException ex, HttpServletRequest request) {
-//        Set<ConstraintViolation<?>> violations = ex.getConstraintViolations();
-//        StringBuilder sb = new StringBuilder();
-//        for (ConstraintViolation<?> violation : violations) {
-//            sb.append(violation.getPropertyPath().toString()).append(":").append(violation.getMessage()).append(";");
-//        }
-//        ApiError apiError = ApiError.builder()
-//                .Path(request.getRequestURI())
-//                .message(sb.toString())
-//                .date(new Date())
-//                .build();
-//        return ResponseEntity.badRequest().body(apiError);
-//    }
 
 }
 

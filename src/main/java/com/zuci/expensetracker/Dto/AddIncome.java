@@ -1,17 +1,14 @@
 package com.zuci.expensetracker.Dto;
+
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Positive;
 import lombok.Data;
 
 import java.time.LocalDate;
 
-
 @Data
 
-public class AddIncome
-{
-    @NotEmpty(message = "username must not be empty")
-    private String userName;
+public class AddIncome {
 
     @NotEmpty(message = "Type must not be empty")
     private String type;
@@ -21,9 +18,8 @@ public class AddIncome
 
     private String incomeName;
 
-    @Positive(message ="Cost should not be negative")
-    private long cost=0;
-
+    @Positive(message = "Cost should not be negative")
+    private long cost = 0;
 
     private LocalDate incomeDate;
 
