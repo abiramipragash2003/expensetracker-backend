@@ -37,7 +37,6 @@ public interface ExpenseTrackerRepository extends JpaRepository<ExpenseTracker, 
     @Query("SELECT SUM(e.cost) FROM ExpenseTracker e WHERE YEAR(e.date) = :year AND e.type = :type AND e.userdb.username=:username")
     long total(@Param("year") int year, @Param("type") String type, @Param("username") String username);
 
-
 }
 
 

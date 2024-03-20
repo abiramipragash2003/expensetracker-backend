@@ -15,6 +15,7 @@ public class ExpensetrackerApplication {
         SpringApplication.run(ExpensetrackerApplication.class, args);
 
     }
+
     @Bean
     public WebMvcConfigurer corsConfigure() {
         return new WebMvcConfigurer() {

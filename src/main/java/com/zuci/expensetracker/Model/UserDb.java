@@ -15,15 +15,20 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class UserDb implements UserDetails {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private long userId;
+
     @Column(unique = true)
     private String username;
+
     private String userPassword;
+
     private String userMailId;
+
     private String userMobileNumber;
+
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Role> roles;
 

@@ -8,7 +8,11 @@ import java.util.Date;
 @Builder
 @Data
 public class ApiError {
+
     private String Path;
+
     private String message;
+
     private Date date;
+
 }

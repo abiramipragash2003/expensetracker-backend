@@ -15,6 +15,7 @@ import java.util.Map;
 @NoArgsConstructor
 
 public class Response {
+
     private List<ExpenseTracker> expenseTracker;
 
     private long totalExpense;
@@ -22,7 +23,9 @@ public class Response {
     private long totalIncome;
 
     private long balance;
+
     Map<String, Long> incomeMap = new HashMap<>();
+
     Map<String, Long> ExpenseMap = new HashMap<>();
 
 }

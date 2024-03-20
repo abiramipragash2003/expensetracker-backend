@@ -19,9 +19,8 @@ public class ExpenseTracker {
     private long id;
 
     @ManyToOne
-    @JoinColumn(name="username")
+    @JoinColumn(name = "username")
     private UserDb userdb;
-
 
     //type is either income or expense
     private String type;
@@ -35,14 +34,13 @@ public class ExpenseTracker {
 
     private LocalDate date;
 
-    public ExpenseTracker(UserDb userdb,String type, String category, String name, long cost, LocalDate date)
-    {
-        this.userdb=userdb;
+    public ExpenseTracker(UserDb userdb, String type, String category, String name, long cost, LocalDate date) {
+        this.userdb = userdb;
         this.type = type;
         this.category = category;
         this.name = name;
         this.cost = cost;
         this.date = date;
-
     }
+
 }
